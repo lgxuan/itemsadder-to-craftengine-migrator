@@ -685,7 +685,7 @@ def convert_images(namespace: str, images: dict[str, Any]) -> dict[str, Any]:
         ce_image = {
             "height": scale,
             "ascent": y_position,
-            "font": image.get("font", f"{namespace}:default"),
+            "font": "minecraft:default",
             "file": file_path,
         }
         if image.get("symbol") is not None:
