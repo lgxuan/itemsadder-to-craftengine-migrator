@@ -156,14 +156,14 @@ function mergeDictOfDicts(target: AnyRecord, key: string, values: AnyRecord): vo
 }
 
 function convertGeneratedModel(namespace: string, itemId: string, material: string, resource: AnyRecord): AnyRecord {
-  let textures = resource.textures ?? resource.texture;
+  let textures: unknown = resource.textures ?? resource.texture;
   if (typeof textures === "string") {
     textures = [textures];
   }
-  textures = Array.isArray(textures) ? textures : [];
-  const textureLocations = textures
-    .map((texture) => resourceLocation(namespace, texture))
-    .filter((loc): loc is string => Boolean(loc));
+  const textureList: unknown[] = Array.isArray(textures) ? textures : [];
+  const textureLocations = textureList
+    .map((texture: unknown) => resourceLocation(namespace, texture))
+    .filter((loc: string | null): loc is string => Boolean(loc));
 
   if (idPath(material) === "elytra" && textureLocations.length === 1) {
     return { textures: [textureLocations[0], textureLocations[0]] };
@@ -261,7 +261,7 @@ function convertFurniture(namespace: string, itemId: string, item: AnyRecord, fu
 }
 
 function generatedBlockModel(namespace: string, itemId: string, resource: AnyRecord): AnyRecord | null {
-  let textures = resource.textures;
+  let textures: unknown = resource.textures;
   if (typeof textures === "string") {
     textures = [textures];
   }
@@ -269,8 +269,8 @@ function generatedBlockModel(namespace: string, itemId: string, resource: AnyRec
     return null;
   }
   const textureLocations = textures
-    .map((texture) => resourceLocation(namespace, texture))
-    .filter((loc): loc is string => Boolean(loc));
+    .map((texture: unknown) => resourceLocation(namespace, texture))
+    .filter((loc: string | null): loc is string => Boolean(loc));
   if (!textureLocations.length) {
     return null;
   }

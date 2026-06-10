@@ -20,7 +20,7 @@ type WebkitEntry = {
   };
 };
 
-type WebkitDataTransferItem = DataTransferItem & {
+type DirectoryDropItem = DataTransferItem & {
   webkitGetAsEntry?: () => WebkitEntry | null;
 };
 
@@ -66,8 +66,13 @@ async function traverseEntry(entry: WebkitEntry, path: string): Promise<UploadFi
 }
 
 async function dataTransferToUploads(dataTransfer: DataTransfer): Promise<UploadFile[]> {
-  const items = Array.from(dataTransfer.items ?? []) as WebkitDataTransferItem[];
-  const entries = items.map((item) => item.webkitGetAsEntry?.()).filter((entry): entry is WebkitEntry => Boolean(entry));
+  const items = Array.from(dataTransfer.items ?? []) as DirectoryDropItem[];
+  const entries = items
+    .map((item) => {
+      const getEntry = (item as DirectoryDropItem).webkitGetAsEntry;
+      return getEntry ? getEntry() : null;
+    })
+    .filter((entry): entry is WebkitEntry => entry !== null);
   if (!entries.length) {
     return fileListToUploads(dataTransfer.files);
   }
