@@ -50,3 +50,23 @@ python .\migrate_itemsadder_to_craftengine.py --source "D:\server\plugins\ItemsA
 ```text
 D:\server\plugins\CraftEngine\resources\_itemsadder_migration_report.json
 ```
+
+## Node Web 单包版本
+
+`node-web/` 是给 Vercel 部署的浏览器前端版本，用来处理 `contents` 里面的单个子文件夹，例如只拖入 `contents/test`。
+
+```powershell
+cd node-web
+npm install
+npm run dev
+```
+
+Vercel 设置：
+
+- Root Directory: `node-web`
+- Build Command: `npm run build`
+- Output Directory: `dist`
+
+前端会在浏览器里解析 YAML、复制 `resourcepack/assets`，并下载 CraftEngine resources zip。
+
+测试链接 https://ia.grep.moe
